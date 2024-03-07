@@ -17,4 +17,5 @@ model Farmer {
   id        Int     @id @default(autoincrement())
   name      String?
   farmName  String?
+  createdAt DateTime @default(now())
 }
