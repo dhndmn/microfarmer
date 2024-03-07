@@ -1,5 +1,3 @@
-<script>
-    import Header from "$lib/components/Header.svelte";
-</script>
+<p>Good morning, farmer name!</p>
 
-<Header title="Farm"/>
+[Dashboard goes here]

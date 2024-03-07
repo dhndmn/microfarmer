@@ -2,6 +2,7 @@
 	import '../app.postcss';
 	import {AppBar, AppShell, TabAnchor, TabGroup } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
+	import { actions } from '$lib/stores/settings';
 
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
@@ -12,23 +13,28 @@
 
 <AppShell>
 	<svelte:fragment slot="pageHeader">		
-		<AppBar background="bg-surface-100-800-token m-4 rounded" gridColumns="grid-cols-2" slotTrail="place-content-end">
+		<AppBar background="bg-surface-100-800-token backdrop-blur m-4 rounded" gridColumns="grid-cols-2" slotTrail="place-content-end">
 			<span class="capitalize">{$page.url.pathname.slice(1)}</span>
 			<svelte:fragment slot="trail">
-				<button type="button" class="btn btn-sm variant-filled">
-					<span>
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-  							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-						</svg>
-					</span>
-					<span>New</span>
-				</button>
+				{#if 1 === 1}
+					<button type="button" class="btn btn-sm variant-filled">
+						<span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+							</svg>
+						</span>
+						<span>New</span>
+					</button>
+				{/if}
+
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
 
 	<!-- Router Slot -->
+	<div class="mx-4">
 	<slot />
+	</div>
 
 	<svelte:fragment slot="footer">
 		<TabGroup 
@@ -38,7 +44,7 @@
 		flex="flex-1 lg:flex-none"
 		rounded=""
 		border=""
-		class="bg-surface-100-800-token w-full"
+		class="w-full bg-surface-100-800-token"
 		>
 		
 			<TabAnchor href="/farm" selected={$page.url.pathname === '/farm'}>
