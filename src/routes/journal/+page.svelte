@@ -1,1 +1,1 @@
-[Journal entries goe here]
+[Journal entries go here]

@@ -2,13 +2,13 @@
 import prisma from '$lib/prisma';
 
 export async function load() {
-	const data = await prisma.Farmer.findUnique({
-        where: {
-            id: 1
-        }
+	const farmers = await prisma.Farmer.findMany({
+		orderBy: {
+			id: 'asc'
+		}
 	});
 
 	return {
-		data
+		farmers
 	};
 }
