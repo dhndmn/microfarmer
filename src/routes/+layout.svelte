@@ -3,6 +3,12 @@
 	import {AppBar, AppShell, TabAnchor, TabGroup } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 	import { actions } from '$lib/stores/settings';
+	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
+	import { initializeStores } from '@skeletonlabs/skeleton';
+
+	initializeStores();
+
+    const modalStore = getModalStore();
 
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
@@ -10,6 +16,8 @@
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 </script>
+
+<Modal />
 
 <AppShell>
 	<svelte:fragment slot="pageHeader">		
