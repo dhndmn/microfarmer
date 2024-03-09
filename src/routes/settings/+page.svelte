@@ -1,7 +1,9 @@
 <script>
+	import { clearStores } from '$lib/utilities/utilities';
 	import { goto } from '$app/navigation';
 
 	async function totalReset() {
+		clearStores();
 		const response = await fetch('/api/settings', {
 			method: 'POST',
 			body: JSON.stringify({}),

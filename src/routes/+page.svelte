@@ -1,50 +1,15 @@
 <script>
 	// @ts-nocheck
-	import { goto } from '$app/navigation';
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import { farmName, farmerName } from '$lib/stores/farmer';
 	import FarmerCard from '$lib/components/FarmerCard.svelte';
 	export let data;
-	console.log(data.farmers);
 
 	const modalStore = getModalStore();
-	const modalNew = {
-		type: 'prompt',
-		title: '',
-		body: 'Farmer Name',
-		value: '',
-		valueAttr: { type: 'text', minlength: 1, maxlength: 30, required: true },
-		buttonTextSubmit: 'Ok',
-		response: (r) => r && createFarmer(r)
+
+	const modalCreate = {
+		type: 'component',
+		component: 'farmerModal'
 	};
-
-	async function createFarmer(name) {
-		let newFarmerResponse;
-		const newFarmer = {
-			name: name,
-			farmName: `${name}'s`
-		};
-
-		try {
-			newFarmerResponse = await fetch('/api/farmer', {
-				method: 'POST',
-				body: JSON.stringify(newFarmer),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
-			$farmName = name; // Set store value
-			$farmerName = name; // Set store value
-			goto('/farm'); // Forward to farm route
-		} catch (error) {
-			modalStore.showModal({
-				type: 'error',
-				title: 'Error',
-				body: 'There was a problem creating your farmer record. Please try again.'
-				// Define any additional modal properties if needed
-			});
-		}
-	}
 </script>
 
 <div class="grid h-screen gap-4 place-items-center">
@@ -63,7 +28,7 @@
 			<button
 				type="button"
 				class="btn btn-xl variant-filled"
-				on:click={() => modalStore.trigger(modalNew)}
+				on:click={() => modalStore.trigger(modalCreate)}
 			>
 				<span>
 					<svg

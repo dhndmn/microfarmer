@@ -3,25 +3,26 @@
 	import { AppBar, AppShell, TabAnchor, TabGroup } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { clearStores } from '$lib/utilities/utilities';
 	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
 	import { initializeStores } from '@skeletonlabs/skeleton';
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
-	import { farmName, farmerName } from '$lib/stores/farmer';
+	import FarmerModal from '$lib/components/onboarding/FarmerModal.svelte';
 
 	initializeStores();
 
+	const modalRegistry = {
+		// Set a unique modal ID, then pass the component reference
+		farmerModal: { ref: FarmerModal }
+		// ...
+	};
 	const modalStore = getModalStore();
-
-	function wipeStores() {
-		$farmerName = '';
-		$farmName = '';
-	}
 </script>
 
-<Modal />
+<Modal components={modalRegistry} />
 
 <AppShell>
 	<svelte:fragment slot="pageHeader">
@@ -54,7 +55,7 @@
 						type="button"
 						class="btn btn-sm variant-filled"
 						on:click={() => {
-							wipeStores();
+							clearStores();
 							goto('/');
 						}}
 					>
