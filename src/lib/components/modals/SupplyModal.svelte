@@ -2,24 +2,25 @@
 	// @ts-nocheck
 
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import { farmerId } from '$lib/stores/farmer';
 	import { supplies } from '$lib/stores/supplies';
 	export let parent;
 
+	let farmerId = parseInt(localStorage.getItem('microfarmer.farmerId'), 10);
 	let inputSupplyCost;
 	let inputSupplyName;
 	let inputSupplyPurchasedAt;
 	let inputSupplyQuantity;
 	let inputSupplyType;
 	const modalStore = getModalStore();
+	console.log('Farmer ID: ', farmerId);
 
 	async function createSupply() {
 		let newSupplyRequest;
 		const newSupply = {
-			cost: parseInt(inputSupplyCost, 10),
-			farmerId: parseInt($farmerId, 10),
+			cost: parseInt(inputSupplyCost, 10) * 100, // Convert to cents
+			farmerId: farmerId,
 			name: inputSupplyName,
-			purchasedAt: inputSupplyPurchasedAt,
+			purchasedAt: new Date(inputSupplyPurchasedAt).toISOString(),
 			quantity: inputSupplyQuantity,
 			type: inputSupplyType
 		};
@@ -32,7 +33,7 @@
 					'Content-Type': 'application/json'
 				}
 			});
-			$supplies = [newSupply, ...$supplies]; // Append to the store
+			$supplies = [newSupplyRequest, ...$supplies];
 			modalStore.close();
 		} catch (error) {
 			modalStore.showModal({

@@ -28,6 +28,12 @@
 			$farmName = inputFarmName; // Set store value
 			$farmerName = inputFarmerName; // Set store value
 			$farmerId = newFarmerRequest.id;
+			if (newFarmerRequest.ok) {
+				const responseData = await newFarmerRequest.json();
+				localStorage.setItem('microfarmer.farmerId', responseData.id.toString());
+			} else {
+				throw new Error('Failed to create new farmer');
+			}
 			modalStore.close();
 			goto('/farm'); // Forward to farm route
 		} catch (error) {

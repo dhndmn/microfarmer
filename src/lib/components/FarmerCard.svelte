@@ -14,6 +14,7 @@
 		$farmName = farm;
 		$farmerId = id;
 		$farmerName = farmer;
+		localStorage.setItem('microfarmer.farmerId', id.toString());
 	}}
 >
 	<Avatar

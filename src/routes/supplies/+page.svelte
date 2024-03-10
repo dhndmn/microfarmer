@@ -4,85 +4,53 @@
 	import { tableMapperValues } from '@skeletonlabs/skeleton';
 	export let data;
 
-	$supplies = data.supplies;
+	// $supplies = data.supplies;
+	$supplies = data.supplies.map((supply) => ({
+		...supply,
+		purchasedAt: new Date(supply.purchasedAt).toLocaleDateString('en-US', {
+			month: 'long',
+			day: 'numeric',
+			year: 'numeric'
+		}),
+		quantity: supply.quantity.toLocaleString('en-US'),
+		cost: (supply.cost / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+	}));
 
-	const tempData = [
-		{
-			id: 1,
-			farmerId: 70,
-			name: 'Hydrogen',
-			cost: 100,
-			type: 'H',
-			quantity: 10,
-			purchasedAt: new Date().toLocaleDateString('en-US', {
-				month: 'short',
-				day: 'numeric',
-				year: 'numeric'
-			})
-		},
-		{
-			id: 2,
-			farmerId: 70,
-			name: 'Helium',
-			cost: 400,
-			type: 'He',
-			quantity: 10,
-			purchasedAt: new Date().toLocaleDateString('en-US', {
-				month: 'short',
-				day: 'numeric',
-				year: 'numeric'
-			})
-		},
-		{
-			id: 3,
-			farmerId: 70,
-			name: 'Lithium',
-			cost: 600,
-			type: 'Li',
-			quantity: 10,
-			purchasedAt: new Date().toLocaleDateString('en-US', {
-				month: 'short',
-				day: 'numeric',
-				year: 'numeric'
-			})
-		},
-		{
-			id: 4,
-			farmerId: 70,
-			name: 'Beryllium',
-			cost: 900,
-			type: 'Be',
-			quantity: 10,
-			purchasedAt: new Date().toLocaleDateString('en-US', {
-				month: 'short',
-				day: 'numeric',
-				year: 'numeric'
-			})
-		},
-		{
-			id: 5,
-			farmerId: 70,
-			name: 'Boron',
-			cost: 1000,
-			type: 'B',
-			quantity: 10,
-			purchasedAt: new Date().toLocaleDateString('en-US', {
-				month: 'short',
-				day: 'numeric',
-				year: 'numeric'
-			})
-		}
-	];
+	$: totalCost = data.supplies
+		.reduce((sum, item) => sum + item.cost / 100, 0)
+		.toLocaleString('en-US', {
+			style: 'currency',
+			currency: 'USD'
+		});
 
-	const datatable = {
+	$: datatable = {
 		// A list of heading labels.
-		head: ['Date', 'Name', 'Type', 'Quantity', 'Cost'],
+		head: ['Date', 'Type', 'Name', 'Quantity', 'Cost'],
 		// The data visibly shown in your table body UI.
-		body: tableMapperValues($supplies, ['purchasedAt', 'name', 'type', 'quantity', 'cost']),
+		body: tableMapperValues($supplies, ['purchasedAt', 'type', 'name', 'quantity', 'cost']),
+		// Optional: The data returned when interactive is enabled and a row is clicked.
+		meta: tableMapperValues(data.supplies, [
+			'id',
+			'purchasedAt',
+			'type',
+			'name',
+			'quantity',
+			'cost'
+		]),
 		// Optional: A list of footer labels.
-		foot: ['[button]', '', '', '[sum]', '[sum]']
+		foot: ['[button]', '', '', '', totalCost]
 	};
+
+	function handleSelection(event) {
+		const selectedSupply = ['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost'].reduce(
+			(obj, key, index) => {
+				obj[key] = event.detail[index];
+				return obj;
+			},
+			{}
+		);
+		console.log(selectedSupply);
+	}
 </script>
 
-Total spend: ${($supplies.reduce((a, b) => a.cost + b.cost, 0) / 100).toFixed(2)}
-<Table source={datatable} />
+<Table source={datatable} interactive={true} on:selected={handleSelection} />

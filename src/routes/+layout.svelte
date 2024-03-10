@@ -10,8 +10,8 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
-	import FarmerModal from '$lib/components/onboarding/FarmerModal.svelte';
-	import SupplyModal from '$lib/components/SupplyModal.svelte';
+	import FarmerModal from '$lib/components/modals/FarmerModal.svelte';
+	import SupplyModal from '$lib/components/modals/SupplyModal.svelte';
 
 	initializeStores();
 
