@@ -11,31 +11,44 @@
 	import { storePopup } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	import FarmerModal from '$lib/components/onboarding/FarmerModal.svelte';
+	import SupplyModal from '$lib/components/SupplyModal.svelte';
 
 	initializeStores();
 
 	const modalRegistry = {
 		// Set a unique modal ID, then pass the component reference
-		farmerModal: { ref: FarmerModal }
+		farmerModal: { ref: FarmerModal },
+		// harvestsModal: { ref: HarvestModal },
+		// journalModal: { ref: journalModal },
+		suppliesModal: { ref: SupplyModal }
 		// ...
 	};
 	const modalStore = getModalStore();
+	$: slug = $page.url.pathname.slice(1);
+	$: modalCreate = {
+		type: 'component',
+		component: `${slug}Modal`
+	};
 </script>
 
 <Modal components={modalRegistry} />
 
 <AppShell>
 	<svelte:fragment slot="pageHeader">
-		{#if $page.url.pathname !== '/'}
+		{#if slug !== ''}
 			<AppBar
 				background="bg-surface-100-800-token backdrop-blur m-4 rounded"
 				gridColumns="grid-cols-2"
 				slotTrail="place-content-end"
 			>
-				<span class="capitalize">{$page.url.pathname.slice(1)}</span>
+				<h2 class="capitalize h2">{slug}</h2>
 				<svelte:fragment slot="trail">
-					{#if 1 === 1}
-						<button type="button" class="btn btn-sm variant-filled">
+					{#if slug === 'harvests' || slug === 'supplies' || slug === 'journal'}
+						<button
+							type="button"
+							class="btn btn-sm variant-filled"
+							on:click={() => modalStore.trigger(modalCreate)}
+						>
 							<span>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +66,7 @@
 					{/if}
 					<button
 						type="button"
-						class="btn btn-sm variant-filled"
+						class="btn btn-sm variant-outline"
 						on:click={() => {
 							clearStores();
 							goto('/');

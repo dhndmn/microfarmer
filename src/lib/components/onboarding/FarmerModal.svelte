@@ -3,7 +3,7 @@
 
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
-	import { farmName, farmerName } from '$lib/stores/farmer';
+	import { farmName, farmerId, farmerName } from '$lib/stores/farmer';
 	export let parent;
 
 	let inputFarmName;
@@ -27,6 +27,7 @@
 			});
 			$farmName = inputFarmName; // Set store value
 			$farmerName = inputFarmerName; // Set store value
+			$farmerId = newFarmerRequest.id;
 			modalStore.close();
 			goto('/farm'); // Forward to farm route
 		} catch (error) {

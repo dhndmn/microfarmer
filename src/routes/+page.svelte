@@ -12,7 +12,7 @@
 	};
 </script>
 
-<div class="grid h-screen gap-4 place-items-center">
+<div class="flex flex-col items-center justify-center h-screen gap-12">
 	<h1
 		class="text-6xl text-transparent uppercase h1 bg-gradient-to-t from-green-700 to-green-300 bg-clip-text box-decoration-clone"
 	>
@@ -23,7 +23,11 @@
 	</h1>
 	<div class="grid grid-flow-col gap-8">
 		{#if data.farmers.length > 0}
-			<FarmerCard farmer={data.farmers[0].name} farm={data.farmers[0].farmName} />
+			<FarmerCard
+				farmer={data.farmers[0].name}
+				farm={data.farmers[0].farmName}
+				id={data.farmers[0].id}
+			/>
 		{:else}
 			<button
 				type="button"
