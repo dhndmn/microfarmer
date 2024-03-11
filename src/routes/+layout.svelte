@@ -27,7 +27,10 @@
 	$: slug = $page.url.pathname.slice(1);
 	$: modalCreate = {
 		type: 'component',
-		component: `${slug}Modal`
+		component: `${slug}Modal`,
+		meta: {
+			action: 'create'
+		}
 	};
 </script>
 

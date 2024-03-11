@@ -1,6 +1,6 @@
 <script>
 	import { Avatar } from '@skeletonlabs/skeleton';
-	import { farmName, farmerId, farmerName } from '$lib/stores/farmer';
+	import { farmName, farmerId, farmerName } from '$lib/stores';
 	import { goto } from '$app/navigation';
 	export let farmer;
 	export let farm;
@@ -14,7 +14,6 @@
 		$farmName = farm;
 		$farmerId = id;
 		$farmerName = farmer;
-		localStorage.setItem('microfarmer.farmerId', id.toString());
 	}}
 >
 	<Avatar

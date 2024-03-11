@@ -1,5 +1,5 @@
 <script>
-	import { farmerName } from '$lib/stores/farmer';
+	import { farmerName } from '$lib/stores';
 	const getDayTime = () => {
 		const hour = new Date().getHours();
 		if (hour < 12) return 'morning';

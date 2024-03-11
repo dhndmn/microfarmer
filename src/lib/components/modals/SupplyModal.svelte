@@ -1,24 +1,24 @@
 <script>
 	// @ts-nocheck
 
+	import { farmerId, supplies } from '$lib/stores';
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import { supplies } from '$lib/stores/supplies';
 	export let parent;
 
-	let farmerId = parseInt(localStorage.getItem('microfarmer.farmerId'), 10);
+	const modalStore = getModalStore();
+	console.log('modalStore:', $modalStore);
+
 	let inputSupplyCost;
 	let inputSupplyName;
 	let inputSupplyPurchasedAt;
 	let inputSupplyQuantity;
 	let inputSupplyType;
-	const modalStore = getModalStore();
-	console.log('Farmer ID: ', farmerId);
 
 	async function createSupply() {
 		let newSupplyRequest;
 		const newSupply = {
 			cost: parseInt(inputSupplyCost, 10) * 100, // Convert to cents
-			farmerId: farmerId,
+			farmerId: $farmerId,
 			name: inputSupplyName,
 			purchasedAt: new Date(inputSupplyPurchasedAt).toISOString(),
 			quantity: inputSupplyQuantity,
@@ -33,7 +33,23 @@
 					'Content-Type': 'application/json'
 				}
 			});
-			$supplies = [newSupplyRequest, ...$supplies];
+			const response = await newSupplyRequest.json();
+
+			const formattedResponse = {
+				...response,
+				purchasedAt: new Date(response.purchasedAt).toLocaleDateString('en-US', {
+					month: 'long',
+					day: 'numeric',
+					year: 'numeric'
+				}),
+				quantity: response.quantity.toLocaleString('en-US'),
+				cost: (response.cost / 100).toLocaleString('en-US', {
+					style: 'currency',
+					currency: 'USD'
+				})
+			};
+
+			$supplies = [formattedResponse, ...$supplies];
 			modalStore.close();
 		} catch (error) {
 			modalStore.showModal({
@@ -42,6 +58,16 @@
 				body: 'Oops!There was a problem creating your supply. Please try again.'
 			});
 		}
+	}
+
+	async function deleteSupply() {
+		modalStore.close();
+		console.log('delete supply');
+	}
+
+	async function updateSupply() {
+		modalStore.close();
+		console.log('update supply');
 	}
 </script>
 
@@ -130,6 +156,9 @@
 		</div>
 
 		<footer class="mt-4 modal-footer {parent.regionFooter}">
+			{#if $modalStore[0].meta.action === 'update'}
+				<button class="btn {parent.buttonNegative}" on:click={() => deleteSupply()}>Delete</button>
+			{/if}
 			<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>Back</button>
 			<button
 				class="btn {parent.buttonPositive}"
@@ -138,7 +167,8 @@
 					!inputSupplyType ||
 					!inputSupplyQuantity ||
 					!inputSupplyCost ||
-					!inputSupplyPurchasedAt}>OK</button
+					!inputSupplyPurchasedAt}
+				>{$modalStore[0].meta.action === 'update' ? 'Update' : 'Create'}</button
 			>
 		</footer>
 	</div>

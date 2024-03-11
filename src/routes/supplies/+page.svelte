@@ -1,10 +1,9 @@
 <script>
-	import { supplies } from '$lib/stores/supplies.js';
-	import { Table } from '@skeletonlabs/skeleton';
-	import { tableMapperValues } from '@skeletonlabs/skeleton';
+	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { selectedSupply, supplies } from '$lib/stores';
+	import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
 	export let data;
 
-	// $supplies = data.supplies;
 	$supplies = data.supplies.map((supply) => ({
 		...supply,
 		purchasedAt: new Date(supply.purchasedAt).toLocaleDateString('en-US', {
@@ -38,18 +37,26 @@
 			'cost'
 		]),
 		// Optional: A list of footer labels.
-		foot: ['[button]', '', '', '', totalCost]
+		foot: ['', '', '', '', totalCost]
+	};
+
+	const modalStore = getModalStore();
+	$: modalUpdate = {
+		type: 'component',
+		component: 'suppliesModal',
+		meta: {
+			action: 'update',
+			supply: $selectedSupply
+		}
 	};
 
 	function handleSelection(event) {
-		const selectedSupply = ['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost'].reduce(
-			(obj, key, index) => {
-				obj[key] = event.detail[index];
-				return obj;
-			},
-			{}
-		);
-		console.log(selectedSupply);
+		$selectedSupply = event.detail.reduce((obj, value, index) => {
+			const key = ['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost'][index];
+			obj[key] = value;
+			return obj;
+		}, {});
+		modalStore.trigger(modalUpdate);
 	}
 </script>
 

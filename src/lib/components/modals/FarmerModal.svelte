@@ -3,7 +3,7 @@
 
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
-	import { farmName, farmerId, farmerName } from '$lib/stores/farmer';
+	import { farmName, farmerId, farmerName } from '$lib/stores';
 	export let parent;
 
 	let inputFarmName;
@@ -25,12 +25,11 @@
 					'Content-Type': 'application/json'
 				}
 			});
-			$farmName = inputFarmName; // Set store value
-			$farmerName = inputFarmerName; // Set store value
-			$farmerId = newFarmerRequest.id;
 			if (newFarmerRequest.ok) {
 				const responseData = await newFarmerRequest.json();
-				localStorage.setItem('microfarmer.farmerId', responseData.id.toString());
+				$farmerId = responseData.id; // Set store value
+				$farmerName = inputFarmerName; // Set store value
+				$farmName = inputFarmName; // Set store value
 			} else {
 				throw new Error('Failed to create new farmer');
 			}
