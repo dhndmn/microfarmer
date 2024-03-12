@@ -9,3 +9,4 @@ export const farmName = localStorageStore(`${prefix}-farm-name`, '');
 
 // Supplies stores
 export const supplies = localStorageStore(`${prefix}-supplies`, []);
+export const supplyTypes = localStorageStore(`${prefix}-supplies`, ['seeds', 'soil', 'trays']);
