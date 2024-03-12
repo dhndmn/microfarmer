@@ -7,7 +7,7 @@ export async function load() {
 			purchasedAt: 'desc'
 		},
 		where: {
-			farmerId: 99
+			farmerId: 100
 		}
 	});
 

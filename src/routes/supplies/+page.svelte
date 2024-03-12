@@ -1,6 +1,7 @@
 <script>
+	// @ts-nocheck
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import { selectedSupply, supplies } from '$lib/stores';
+	import { supplies } from '$lib/stores';
 	import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
 	export let data;
 
@@ -41,21 +42,23 @@
 	};
 
 	const modalStore = getModalStore();
-	$: modalUpdate = {
-		type: 'component',
-		component: 'suppliesModal',
-		meta: {
-			action: 'update',
-			supply: $selectedSupply
-		}
-	};
 
 	function handleSelection(event) {
-		$selectedSupply = event.detail.reduce((obj, value, index) => {
+		console.log(event.detail);
+		const selectedSupply = event.detail.reduce((obj, value, index) => {
 			const key = ['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost'][index];
 			obj[key] = value;
 			return obj;
 		}, {});
+		const modalUpdate = {
+			type: 'component',
+			component: 'suppliesModal',
+			meta: {
+				action: 'update',
+				supply: selectedSupply
+			}
+		};
+
 		modalStore.trigger(modalUpdate);
 	}
 </script>

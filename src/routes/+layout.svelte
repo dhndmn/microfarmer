@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import '../app.postcss';
 	import { AppBar, AppShell, TabAnchor, TabGroup } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';

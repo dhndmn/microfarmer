@@ -29,14 +29,17 @@ export async function GET() {
 
 // Update
 export async function PUT({ request }) {
-	const { id, name, type } = await request.json();
+	const { id, cost, name, purchasedAt, quantity, type } = await request.json();
 	const updatedSupply = await prisma.supply.update({
 		where: {
 			id: id
 		},
 		data: {
+			cost: cost,
 			name: name,
-			farmName: type
+			purchasedAt: purchasedAt,
+			quantity: quantity,
+			type: type
 		}
 	});
 	await prisma.$disconnect();
