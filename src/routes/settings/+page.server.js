@@ -2,16 +2,22 @@
 import prisma from '$lib/prisma';
 
 export async function load() {
-	const supplies = await prisma.Supply.findMany({
+	const supplyTypes = await prisma.Supply.findMany({
+		select: {
+			type: true
+		},
 		orderBy: {
-			purchasedAt: 'desc'
+			type: 'asc'
 		},
 		where: {
+			type: {
+				not: null
+			},
 			farmerId: 102
 		}
 	});
 
 	return {
-		supplies
+		supplyTypes
 	};
 }
