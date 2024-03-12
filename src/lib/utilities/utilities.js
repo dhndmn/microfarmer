@@ -1,6 +1,9 @@
-import { farmerName, farmName } from '$lib/stores/farmer';
+import { prefix } from '$lib/stores';
 
 export function clearStores() {
-	farmerName.set('');
-	farmName.set('');
+	for (var key in localStorage) {
+		if (key.startsWith(prefix)) {
+			localStorage.removeItem(key);
+		}
+	}
 }

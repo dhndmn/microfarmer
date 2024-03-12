@@ -1,17 +1,19 @@
 <script>
 	import { Avatar } from '@skeletonlabs/skeleton';
-	import { farmName, farmerName } from '$lib/stores/farmer';
+	import { farmName, farmerId, farmerName } from '$lib/stores';
 	import { goto } from '$app/navigation';
 	export let farmer;
 	export let farm;
+	export let id;
 </script>
 
 <div
 	class="flex items-center gap-4 p-4 card hover:cursor-pointer"
 	on:click={() => {
 		goto('/farm');
-		$farmerName = farmer;
 		$farmName = farm;
+		$farmerId = id;
+		$farmerName = farmer;
 	}}
 >
 	<Avatar

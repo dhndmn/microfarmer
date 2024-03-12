@@ -2,6 +2,7 @@
 	// @ts-nocheck
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import FarmerCard from '$lib/components/FarmerCard.svelte';
+	import Logo from '$lib/components/Logo.svelte';
 	export let data;
 
 	const modalStore = getModalStore();
@@ -12,18 +13,15 @@
 	};
 </script>
 
-<div class="grid h-screen gap-4 place-items-center">
-	<h1
-		class="text-6xl text-transparent uppercase h1 bg-gradient-to-t from-green-700 to-green-300 bg-clip-text box-decoration-clone"
-	>
-		<span
-			class="text-5xl font-thin text-transparent lowercase bg-gradient-to-t from-red-700 to-red-300 bg-clip-text box-decoration-clone"
-			>micro</span
-		>Farmer
-	</h1>
+<div class="flex flex-col items-center justify-center h-screen gap-12">
+	<Logo />
 	<div class="grid grid-flow-col gap-8">
 		{#if data.farmers.length > 0}
-			<FarmerCard farmer={data.farmers[0].name} farm={data.farmers[0].farmName} />
+			<FarmerCard
+				farmer={data.farmers[0].name}
+				farm={data.farmers[0].farmName}
+				id={data.farmers[0].id}
+			/>
 		{:else}
 			<button
 				type="button"
