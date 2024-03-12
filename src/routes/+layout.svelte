@@ -2,6 +2,7 @@
 	// @ts-nocheck
 	import '../app.postcss';
 	import { AppBar, AppShell, TabAnchor, TabGroup } from '@skeletonlabs/skeleton';
+	import { farmName } from '$lib/stores';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { clearStores } from '$lib/utilities/utilities';
@@ -45,7 +46,7 @@
 				gridColumns="grid-cols-2"
 				slotTrail="place-content-end"
 			>
-				<h2 class="capitalize h2">{slug}</h2>
+				<h2 class="capitalize h2">{slug === 'farm' ? `${$farmName} ${slug}` : slug}</h2>
 				<svelte:fragment slot="trail">
 					{#if slug === 'harvests' || slug === 'supplies' || slug === 'journal'}
 						<button
