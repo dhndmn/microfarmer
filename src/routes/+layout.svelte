@@ -176,7 +176,7 @@
 					<span>Supplies</span>
 				</TabAnchor>
 
-				<TabAnchor href="/journal" selected={$page.url.pathname === '/journal'}>
+				<!-- <TabAnchor href="/journal" selected={$page.url.pathname === '/journal'}>
 					<svelte:fragment slot="lead">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -194,7 +194,7 @@
 						</svg>
 					</svelte:fragment>
 					<span>Journal</span>
-				</TabAnchor>
+				</TabAnchor> -->
 
 				<TabAnchor href="/settings" selected={$page.url.pathname === '/settings'}>
 					<svelte:fragment slot="lead">
