@@ -13,9 +13,11 @@
 	let inputHarvestGrams;
 	let inputHarvestTraySize;
 
+	console.log($modalStore[0].meta.harvest);
+
 	if ($modalStore[0].meta.harvest) {
+		inputHarvestCrop = $modalStore[0].meta.harvest.crop;
 		inputHarvestId = $modalStore[0].meta.harvest.id;
-		inputHarvestCrop = $modalStore[0].meta.harvest.name;
 		inputHarvestHarvestedAt = new Date($modalStore[0].meta.harvest.harvestedAt)
 			.toISOString()
 			.split('T')[0];
@@ -50,7 +52,7 @@
 					day: 'numeric',
 					year: 'numeric'
 				}),
-				grams: response.quantity.toLocaleString('en-US')
+				grams: response.grams.toLocaleString('en-US')
 			};
 
 			$harvests = [formattedResponse, ...$harvests];
@@ -102,7 +104,7 @@
 				day: 'numeric',
 				year: 'numeric'
 			}),
-			grams: confirmation.quantity.toLocaleString('en-US')
+			grams: parseInt(confirmation.grams, 10)
 		};
 		$harvests = $harvests.map((harvest) =>
 			harvest.id === inputHarvestId ? { ...harvest, ...formattedConfirmation } : harvest

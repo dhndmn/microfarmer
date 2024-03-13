@@ -16,19 +16,13 @@
 		cost: (supply.cost / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 	}));
 
-	$: totalCost = data.supplies
-		.reduce((sum, item) => sum + item.cost / 100, 0)
-		.toLocaleString('en-US', {
-			style: 'currency',
-			currency: 'USD'
-		});
+	$: totalCost = $supplies
+		.reduce((sum, item) => sum + (parseInt(item.cost.replace(/[^0-9.-]+/g, '')) || 0), 0)
+		.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
 	$: datatable = {
-		// A list of heading labels.
 		head: ['Date', 'Type', 'Name', 'Quantity', 'Cost'],
-		// The data visibly shown in your table body UI.
 		body: tableMapperValues($supplies, ['purchasedAt', 'type', 'name', 'quantity', 'cost']),
-		// Optional: The data returned when interactive is enabled and a row is clicked.
 		meta: tableMapperValues(data.supplies, [
 			'id',
 			'purchasedAt',
@@ -37,7 +31,6 @@
 			'quantity',
 			'cost'
 		]),
-		// Optional: A list of footer labels.
 		foot: ['', '', '', '', totalCost]
 	};
 
@@ -63,4 +56,8 @@
 	}
 </script>
 
-<Table source={datatable} interactive={true} on:selected={handleSelection} />
+{#if $supplies.length}
+	<Table source={datatable} interactive={true} on:selected={handleSelection} />
+{:else}
+	<p>No supplies have been entered yet.</p>
+{/if}

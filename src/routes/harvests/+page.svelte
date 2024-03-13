@@ -12,18 +12,18 @@
 			day: 'numeric',
 			year: 'numeric'
 		}),
-		grams: harvest.quantity.toLocaleString('en-US')
+		grams: harvest.grams.toLocaleString('en-US')
 	}));
 
+	$: totalGrams = $harvests
+		.reduce((sum, item) => sum + parseInt(item.grams.replace(/,/g, ''), 10), 0)
+		.toLocaleString('en-US');
+
 	$: datatable = {
-		// A list of heading labels.
 		head: ['Date', 'Crop', 'Tray', 'Grams'],
-		// The data visibly shown in your table body UI.
 		body: tableMapperValues($harvests, ['harvestedAt', 'crop', 'traySize', 'grams']),
-		// Optional: The data returned when interactive is enabled and a row is clicked.
-		meta: tableMapperValues(data.harvests, ['id', 'harvestedAt', 'crop', 'traySize', 'grams']),
-		// Optional: A list of footer labels.
-		foot: ['', '', '', '']
+		meta: tableMapperValues($harvests, ['id', 'harvestedAt', 'crop', 'traySize', 'grams']),
+		foot: ['', '', '', totalGrams]
 	};
 
 	const modalStore = getModalStore();
@@ -40,7 +40,7 @@
 			component: 'harvestsModal',
 			meta: {
 				action: 'update',
-				supply: selectedHarvest
+				harvest: selectedHarvest
 			}
 		};
 
@@ -48,4 +48,8 @@
 	}
 </script>
 
-<Table source={datatable} interactive={true} on:selected={handleSelection} />
+{#if $harvests.length}
+	<Table source={datatable} interactive={true} on:selected={handleSelection} />
+{:else}
+	<p>No harvests have been entered yet.</p>
+{/if}
