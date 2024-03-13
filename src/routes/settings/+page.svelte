@@ -1,10 +1,11 @@
 <script>
+	// @ts-nocheck
 	import { clearStores } from '$lib/utilities/utilities';
 	import { goto } from '$app/navigation';
 	import { InputChip } from '@skeletonlabs/skeleton';
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import { supplyTypes } from '$lib/stores';
+	import { farmName, farmerId, farmerName, supplyTypes } from '$lib/stores';
 	export let data;
 
 	$: $supplyTypes = [
@@ -12,6 +13,8 @@
 	].sort();
 	console.log($supplyTypes);
 
+	let inputFarmName = $farmName;
+	let inputFarmerName = $farmerName;
 	const modalStore = getModalStore();
 	const modal = {
 		type: 'confirm',
@@ -22,6 +25,25 @@
 		// TRUE if confirm pressed, FALSE if cancel pressed
 		response: (r) => (r === true ? totalReset() : false)
 	};
+
+	async function updateFarmer() {
+		const response = await fetch('/api/farmer', {
+			method: 'PUT',
+			body: JSON.stringify({
+				id: $farmerId,
+				name: inputFarmerName,
+				farmName: inputFarmName
+			}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+		if (response.ok) {
+			const updatedData = await response.json();
+			$farmName = updatedData.farmName;
+			$farmerName = updatedData.name;
+		}
+	}
 
 	async function totalReset() {
 		clearStores();
@@ -47,10 +69,59 @@
 
 <div class="grid gap-4">
 	<div class="grid gap-4">
+		<h2 class="h2">Farm</h2>
+		<div class="grid gap-4 grid-cols-[1fr_3fr_1fr] items-center">
+			<label class="label" for="farmer-name">
+				<span>Your Name</span>
+			</label>
+			<input
+				name="farmer-name"
+				class="px-3 py-1 input"
+				class:input-error={!inputFarmerName}
+				class:input-success={inputFarmerName}
+				placeholder={inputFarmerName}
+				required
+				type="text"
+				bind:value={inputFarmerName}
+			/>
+			{#if inputFarmerName !== $farmerName}
+				<button type="button" class="btn variant-filled" on:click={() => updateFarmer()}>
+					Update
+				</button>
+			{/if}
+		</div>
+		<div class="grid gap-4 grid-cols-[1fr_3fr_1fr] items-center">
+			<label class="label" for="farm-name">
+				<span>Farm Name</span>
+			</label>
+			<input
+				name="farm-name"
+				class="px-3 py-1 input"
+				class:input-error={!inputFarmName}
+				class:input-success={inputFarmName}
+				placeholder={inputFarmName}
+				required
+				type="text"
+				bind:value={inputFarmName}
+			/>
+			{#if inputFarmName !== $farmName}
+				<button type="button" class="btn variant-filled" on:click={() => updateFarmer()}>
+					Update
+				</button>
+			{/if}
+		</div>
+	</div>
+
+	<hr class="!border-dashed m-4" />
+
+	<div class="grid gap-4">
 		<h2 class="h2">Supplies</h2>
 		<h3 class="h3">Types</h3>
 		<InputChip bind:value={$supplyTypes} name="chips" placeholder="Enter any value..." />
 	</div>
+
+	<hr class="!border-dashed m-4" />
+
 	<div class="grid gap-4">
 		<h2 class="h2">App</h2>
 		<LightSwitch width="w-16" height="h-8" />
