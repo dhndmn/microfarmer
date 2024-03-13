@@ -12,6 +12,7 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+	import HarvestModal from '$lib/components/modals/HarvestModal.svelte';
 	import FarmerModal from '$lib/components/modals/FarmerModal.svelte';
 	import SupplyModal from '$lib/components/modals/SupplyModal.svelte';
 
@@ -20,7 +21,7 @@
 	const modalRegistry = {
 		// Set a unique modal ID, then pass the component reference
 		farmerModal: { ref: FarmerModal },
-		// harvestsModal: { ref: HarvestModal },
+		harvestsModal: { ref: HarvestModal },
 		// journalModal: { ref: journalModal },
 		suppliesModal: { ref: SupplyModal }
 		// ...

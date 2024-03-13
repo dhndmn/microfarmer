@@ -2,9 +2,9 @@
 import prisma from '$lib/prisma';
 
 export async function load() {
-	const supplies = await prisma.Supply.findMany({
+	const harvests = await prisma.Harvest.findMany({
 		orderBy: {
-			purchasedAt: 'desc'
+			harvestedAt: 'desc'
 		},
 		where: {
 			farmerId: 103
@@ -12,6 +12,6 @@ export async function load() {
 	});
 
 	return {
-		supplies
+		harvests
 	};
 }
