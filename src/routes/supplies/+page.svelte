@@ -1,20 +1,28 @@
 <script>
 	// @ts-nocheck
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import { supplies } from '$lib/stores';
+	import { farmerId, supplies } from '$lib/stores';
+	import { onMount } from 'svelte';
 	import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
-	export let data;
 
-	$supplies = data.supplies.map((supply) => ({
-		...supply,
-		purchasedAt: new Date(supply.purchasedAt).toLocaleDateString('en-US', {
-			month: 'long',
-			day: 'numeric',
-			year: 'numeric'
-		}),
-		quantity: supply.quantity.toLocaleString('en-US'),
-		cost: (supply.cost / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-	}));
+	onMount(async () => {
+		const response = await fetch(`/api/supplies?farmerId=${$farmerId}`);
+		if (response.ok) {
+			const data = await response.json();
+			$supplies = data.map((supply) => ({
+				...supply,
+				purchasedAt: new Date(supply.purchasedAt).toLocaleDateString('en-US', {
+					month: 'long',
+					day: 'numeric',
+					year: 'numeric'
+				}),
+				quantity: supply.quantity.toLocaleString('en-US'),
+				cost: (supply.cost / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+			}));
+		} else {
+			// Handle errors here
+		}
+	});
 
 	$: totalCost = $supplies
 		.reduce((sum, item) => sum + (parseInt(item.cost.replace(/[^0-9.-]+/g, '')) || 0), 0)
@@ -23,14 +31,7 @@
 	$: datatable = {
 		head: ['Date', 'Type', 'Name', 'Quantity', 'Cost'],
 		body: tableMapperValues($supplies, ['purchasedAt', 'type', 'name', 'quantity', 'cost']),
-		meta: tableMapperValues(data.supplies, [
-			'id',
-			'purchasedAt',
-			'type',
-			'name',
-			'quantity',
-			'cost'
-		]),
+		meta: tableMapperValues($supplies, ['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost']),
 		foot: ['', '', '', '', totalCost]
 	};
 

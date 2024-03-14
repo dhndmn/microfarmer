@@ -1,19 +1,27 @@
 <script>
 	// @ts-nocheck
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import { harvests } from '$lib/stores';
+	import { farmerId, harvests } from '$lib/stores';
+	import { onMount } from 'svelte';
 	import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
-	export let data;
 
-	$harvests = data.harvests.map((harvest) => ({
-		...harvest,
-		harvestedAt: new Date(harvest.harvestedAt).toLocaleDateString('en-US', {
-			month: 'long',
-			day: 'numeric',
-			year: 'numeric'
-		}),
-		grams: harvest.grams.toLocaleString('en-US')
-	}));
+	onMount(async () => {
+		const response = await fetch(`/api/harvests?farmerId=${$farmerId}`);
+		if (response.ok) {
+			const data = await response.json();
+			$harvests = data.map((harvest) => ({
+				...harvest,
+				harvestedAt: new Date(harvest.harvestedAt).toLocaleDateString('en-US', {
+					month: 'long',
+					day: 'numeric',
+					year: 'numeric'
+				}),
+				grams: harvest.grams.toLocaleString('en-US')
+			}));
+		} else {
+			// Handle errors here
+		}
+	});
 
 	$: totalGrams = $harvests
 		.reduce((sum, item) => sum + parseInt(item.grams.replace(/,/g, ''), 10), 0)
