@@ -17,7 +17,7 @@
 <p>Good {dayTime}, farmer {$farmerName}!</p>
 
 <div class="grid grid-cols-1 gap-4 my-12">
-	<CostPer harvestGrams totalSpending />
-	<HarvestSummary harvestGrams />
-	<TopCrops />
+	<CostPer data={{ harvests: $harvests, supplies: $supplies }} title="Cost Per Pound" />
+	<HarvestSummary data={{ harvests: $harvests }} title="All-Time Harvested" />
+	<TopCrops data={{ harvests: $harvests }} title="Top Crops" />
 </div>
