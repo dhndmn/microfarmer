@@ -69,8 +69,15 @@
 
 <div class="grid gap-4">
 	<div class="grid gap-4">
-		<h2 class="h2">Farm</h2>
-		<div class="grid gap-4 grid-cols-[1fr_3fr_1fr] items-center">
+		<div class="flex items-center gap-4">
+			<h2 class="h2">Farm</h2>
+			{#if inputFarmName !== $farmName || inputFarmerName !== $farmerName}
+				<button type="button" class="btn btn-sm variant-filled" on:click={() => updateFarmer()}>
+					Update
+				</button>
+			{/if}
+		</div>
+		<div class="grid gap-4 grid-cols-[1fr_3fr] items-center">
 			<label class="label" for="farmer-name">
 				<span>Your Name</span>
 			</label>
@@ -78,19 +85,14 @@
 				name="farmer-name"
 				class="px-3 py-1 input"
 				class:input-error={!inputFarmerName}
-				class:input-success={inputFarmerName}
+				class:input-success={inputFarmerName !== $farmerName}
 				placeholder={inputFarmerName}
 				required
 				type="text"
 				bind:value={inputFarmerName}
 			/>
-			{#if inputFarmerName !== $farmerName}
-				<button type="button" class="btn variant-filled" on:click={() => updateFarmer()}>
-					Update
-				</button>
-			{/if}
 		</div>
-		<div class="grid gap-4 grid-cols-[1fr_3fr_1fr] items-center">
+		<div class="grid gap-4 grid-cols-[1fr_3fr] items-center">
 			<label class="label" for="farm-name">
 				<span>Farm Name</span>
 			</label>
@@ -98,17 +100,12 @@
 				name="farm-name"
 				class="px-3 py-1 input"
 				class:input-error={!inputFarmName}
-				class:input-success={inputFarmName}
+				class:input-success={inputFarmName !== $farmName}
 				placeholder={inputFarmName}
 				required
 				type="text"
 				bind:value={inputFarmName}
 			/>
-			{#if inputFarmName !== $farmName}
-				<button type="button" class="btn variant-filled" on:click={() => updateFarmer()}>
-					Update
-				</button>
-			{/if}
 		</div>
 	</div>
 
