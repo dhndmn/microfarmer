@@ -16,11 +16,7 @@ export async function POST({ request }) {
 export async function GET() {
 	const supply = await prisma.supply.findMany({
 		orderBy: {
-			name: 'asc'
-		},
-		select: {
-			id: true,
-			name: true
+			purchasedAt: 'desc'
 		}
 	});
 	await prisma.$disconnect();
