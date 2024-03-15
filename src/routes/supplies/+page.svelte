@@ -15,23 +15,34 @@
 					month: 'long',
 					day: 'numeric',
 					year: 'numeric'
-				}),
-				quantity: supply.quantity.toLocaleString('en-US'),
-				cost: (supply.cost / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+				})
 			}));
 		} else {
 			// Handle errors here
 		}
 	});
 
-	$: totalCost = $supplies
-		.reduce((sum, item) => sum + (parseInt(item.cost.replace(/[^0-9.-]+/g, '')) || 0), 0)
-		.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+	$: totalCost = ($supplies.reduce((sum, item) => sum + (item.cost || 0), 0) / 100).toLocaleString(
+		'en-US',
+		{ style: 'currency', currency: 'USD' }
+	);
 
 	$: datatable = {
 		head: ['Date', 'Type', 'Name', 'Quantity', 'Cost'],
-		body: tableMapperValues($supplies, ['purchasedAt', 'type', 'name', 'quantity', 'cost']),
-		meta: tableMapperValues($supplies, ['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost']),
+		body: tableMapperValues(
+			$supplies.map((s) => ({
+				...s,
+				cost: (s.cost / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+			})),
+			['purchasedAt', 'type', 'name', 'quantity', 'cost']
+		),
+		meta: tableMapperValues(
+			$supplies.map((s) => ({
+				...s,
+				cost: s.cost / 100
+			})),
+			['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost']
+		),
 		foot: ['', '', '', '', totalCost]
 	};
 
@@ -40,7 +51,11 @@
 	function handleSelection(event) {
 		console.log(event.detail);
 		const selectedSupply = event.detail.reduce((obj, value, index) => {
-			const key = ['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost'][index];
+			const keys = ['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost'];
+			const key = keys[index];
+			if (key === 'cost') {
+				value = parseInt(value * 100, 10);
+			}
 			obj[key] = value;
 			return obj;
 		}, {});

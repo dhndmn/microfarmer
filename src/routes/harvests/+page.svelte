@@ -13,19 +13,16 @@
 				...harvest,
 				harvestedAt: new Date(harvest.harvestedAt).toLocaleDateString('en-US', {
 					month: 'long',
-					day: 'numeric',
+					day: '2-digit',
 					year: 'numeric'
-				}),
-				grams: harvest.grams.toLocaleString('en-US')
+				})
 			}));
 		} else {
 			// Handle errors here
 		}
 	});
 
-	$: totalGrams = $harvests
-		.reduce((sum, item) => sum + parseInt(item.grams.replace(/,/g, ''), 10), 0)
-		.toLocaleString('en-US');
+	$: totalGrams = $harvests.reduce((sum, item) => sum + item.grams, 0).toLocaleString('en-US');
 
 	$: datatable = {
 		head: ['Date', 'Crop', 'Tray', 'Grams'],
