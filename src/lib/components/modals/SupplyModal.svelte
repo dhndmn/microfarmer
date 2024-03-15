@@ -109,11 +109,6 @@
 				month: 'long',
 				day: 'numeric',
 				year: 'numeric'
-			}),
-			quantity: confirmation.quantity.toLocaleString('en-US'),
-			cost: (confirmation.cost / 100).toLocaleString('en-US', {
-				style: 'currency',
-				currency: 'USD'
 			})
 		};
 		$supplies = $supplies.map((supply) =>
