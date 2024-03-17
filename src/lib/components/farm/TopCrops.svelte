@@ -31,8 +31,14 @@
 	let timeSpan = timeSpans[0].span;
 	const tableData = {
 		head: ['crop', 'grams'],
-		body: tableMapperValues(harvestTotals, ['crop', 'grams']),
-		meta: tableMapperValues(harvestTotals, ['crop', 'grams'])
+		body: tableMapperValues(
+			harvestTotals.map((harvest) => ({ ...harvest, grams: harvest.grams.toLocaleString() })),
+			['crop', 'grams']
+		),
+		meta: tableMapperValues(
+			harvestTotals.map((harvest) => ({ ...harvest, grams: harvest.grams.toLocaleString() })),
+			['crop', 'grams']
+		)
 	};
 </script>
 

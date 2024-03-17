@@ -26,8 +26,14 @@
 
 	$: datatable = {
 		head: ['Date', 'Crop', 'Tray', 'Grams'],
-		body: tableMapperValues($harvests, ['harvestedAt', 'crop', 'traySize', 'grams']),
-		meta: tableMapperValues($harvests, ['id', 'harvestedAt', 'crop', 'traySize', 'grams']),
+		body: tableMapperValues(
+			$harvests.map((harvest) => ({ ...harvest, grams: harvest.grams.toLocaleString('en-US') })),
+			['harvestedAt', 'crop', 'traySize', 'grams']
+		),
+		meta: tableMapperValues(
+			$harvests.map((harvest) => ({ ...harvest, grams: harvest.grams.toLocaleString('en-US') })),
+			['id', 'harvestedAt', 'crop', 'traySize', 'grams']
+		),
 		foot: ['', '', '', totalGrams]
 	};
 
