@@ -5,7 +5,6 @@
 	import { farmName } from '$lib/stores';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { clearStores } from '$lib/utilities/utilities';
 	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
 	import { initializeStores } from '@skeletonlabs/skeleton';
 	// Floating UI for Popups
@@ -74,7 +73,6 @@
 						type="button"
 						class="btn btn-sm variant-outline"
 						on:click={() => {
-							clearStores();
 							goto('/');
 						}}
 					>
