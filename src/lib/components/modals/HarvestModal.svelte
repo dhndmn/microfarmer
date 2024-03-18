@@ -109,9 +109,12 @@
 </script>
 
 {#if $modalStore[0]}
-	<div class="w-modal-wide">
-		<div class="grid grid-cols-[1fr_auto] gap-4 items-center">
-			<label class="label" for="harvest-harvested-at">
+	<div class="p-4 rounded-lg w-modal-wide bg-surface-100-800-token">
+		<header class="text-2xl font-bold modal-header">
+			{$modalStore[0].meta.action === 'update' ? 'Update' : 'Create'} Harvest
+		</header>
+		<div class="grid grid-cols-[1fr_2fr] gap-4 items-center mt-4">
+			<label class="text-right label" for="harvest-harvested-at">
 				<span>Harvest Date</span>
 			</label>
 			<input
@@ -122,7 +125,7 @@
 				type="date"
 				bind:value={inputHarvestHarvestedAt}
 			/>
-			<label class="label" for="harvest-crop">
+			<label class="text-right label" for="harvest-crop">
 				<span>Crop</span>
 			</label>
 			<input
@@ -133,7 +136,7 @@
 				type="text"
 				bind:value={inputHarvestCrop}
 			/>
-			<label class="label" for="harvest-tray-size">
+			<label class="text-right label" for="harvest-tray-size">
 				<span>Tray Size</span>
 			</label>
 			<input
@@ -145,7 +148,7 @@
 				type="text"
 				bind:value={inputHarvestTraySize}
 			/>
-			<label class="label" for="harvest-grams">
+			<label class="text-right label" for="harvest-grams">
 				<span>Grams</span>
 			</label>
 			<input

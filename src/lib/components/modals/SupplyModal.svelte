@@ -115,9 +115,12 @@
 </script>
 
 {#if $modalStore[0]}
-	<div class="w-modal-wide">
-		<div class="grid grid-cols-[1fr_auto] gap-4 items-center">
-			<label class="label" for="supply-purchased-at">
+	<div class="p-4 rounded-lg w-modal-wide bg-surface-100-800-token">
+		<header class="text-2xl font-bold modal-header">
+			{$modalStore[0].meta.action === 'update' ? 'Update' : 'Create'} Supply
+		</header>
+		<div class="grid grid-cols-[1fr_2fr] gap-4 items-center mt-4">
+			<label class="text-right label" for="supply-purchased-at">
 				<span>Purchase Date</span>
 			</label>
 			<input
@@ -132,8 +135,8 @@
 				type="date"
 				bind:value={inputSupplyPurchasedAt}
 			/>
-			<label class="label" for="supply-name">
-				<span>Name</span>
+			<label class="text-right label" for="supply-name">
+				<span>Item</span>
 			</label>
 			<input
 				name="supply-name"
@@ -147,7 +150,7 @@
 				type="text"
 				bind:value={inputSupplyName}
 			/>
-			<label class="label" for="supply-type">
+			<label class="text-right label" for="supply-type">
 				<span>Type</span>
 			</label>
 			<input
@@ -162,7 +165,7 @@
 				type="text"
 				bind:value={inputSupplyType}
 			/>
-			<label class="label" for="supply-quantity">
+			<label class="text-right label" for="supply-quantity">
 				<span>Quantity</span>
 			</label>
 			<input
@@ -177,7 +180,7 @@
 				type="number"
 				bind:value={inputSupplyQuantity}
 			/>
-			<label class="label" for="supply-cost">
+			<label class="text-right label" for="supply-cost">
 				<span>Cost</span>
 			</label>
 			<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
