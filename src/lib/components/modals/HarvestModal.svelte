@@ -13,8 +13,6 @@
 	let inputHarvestGrams;
 	let inputHarvestTraySize;
 
-	console.log($modalStore[0].meta.harvest);
-
 	if ($modalStore[0].meta.harvest) {
 		inputHarvestCrop = $modalStore[0].meta.harvest.crop;
 		inputHarvestId = $modalStore[0].meta.harvest.id;
@@ -23,6 +21,8 @@
 			.split('T')[0];
 		inputHarvestGrams = $modalStore[0].meta.harvest.grams;
 		inputHarvestTraySize = $modalStore[0].meta.harvest.traySize;
+	} else {
+		inputHarvestHarvestedAt = new Date().toISOString().split('T')[0];
 	}
 
 	async function createHarvest() {
@@ -51,18 +51,16 @@
 					month: 'long',
 					day: 'numeric',
 					year: 'numeric'
-				}),
-				grams: response.grams.toLocaleString('en-US')
+				})
 			};
 
 			$harvests = [formattedResponse, ...$harvests];
-			console.log('Harvests:', $harvests);
 			modalStore.close();
 		} catch (error) {
 			modalStore.showModal({
 				type: 'error',
 				title: 'Error',
-				body: 'Oops!There was a problem creating your harvest. Please try again.'
+				body: 'Oops! There was a problem creating your harvest. Please try again.'
 			});
 		}
 	}
@@ -77,8 +75,6 @@
 		}); // Delete supply from database
 		const confirmation = await deleteHarvest.json();
 		$harvests = $harvests.filter((harvest) => harvest.id !== inputHarvestId); // Remove deleted harvest from store
-		console.log('harvest deleted:', confirmation);
-		console.log('Harvests:', $harvests);
 		modalStore.close(); // Close modal
 	}
 
@@ -103,14 +99,11 @@
 				month: 'long',
 				day: 'numeric',
 				year: 'numeric'
-			}),
-			grams: parseInt(confirmation.grams, 10)
+			})
 		};
 		$harvests = $harvests.map((harvest) =>
 			harvest.id === inputHarvestId ? { ...harvest, ...formattedConfirmation } : harvest
 		); // Update harvest in store
-		console.log('harvest updated:', confirmation);
-		console.log('Harvests:', $harvests);
 		modalStore.close(); // Close modal
 	}
 </script>
@@ -126,10 +119,6 @@
 				class="px-3 py-1 input"
 				class:input-error={!inputHarvestHarvestedAt}
 				class:input-success={inputHarvestHarvestedAt}
-				minlength="1"
-				maxlength="30"
-				placeholder="Harvest Date"
-				required
 				type="date"
 				bind:value={inputHarvestHarvestedAt}
 			/>
@@ -141,10 +130,6 @@
 				class="px-3 py-1 input"
 				class:input-error={!inputHarvestCrop}
 				class:input-success={inputHarvestCrop}
-				minlength="1"
-				maxlength="30"
-				placeholder=""
-				required
 				type="text"
 				bind:value={inputHarvestCrop}
 			/>
@@ -156,10 +141,7 @@
 				class="px-3 py-1 input"
 				class:input-error={!inputHarvestTraySize}
 				class:input-success={inputHarvestTraySize}
-				minlength="1"
-				maxlength="30"
 				placeholder="1020, 520, mini, ..."
-				required
 				type="text"
 				bind:value={inputHarvestTraySize}
 			/>
@@ -171,10 +153,6 @@
 				class="px-3 py-1 input"
 				class:input-error={!inputHarvestGrams}
 				class:input-success={inputHarvestGrams}
-				minlength="1"
-				maxlength="30"
-				placeholder=""
-				required
 				type="number"
 				bind:value={inputHarvestGrams}
 			/>

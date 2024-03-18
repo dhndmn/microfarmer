@@ -40,9 +40,12 @@
 	const modalStore = getModalStore();
 
 	function handleSelection(event) {
-		console.log(event.detail);
 		const selectedHarvest = event.detail.reduce((obj, value, index) => {
-			const key = ['id', 'harvestedAt', 'crop', 'traySize', 'grams'][index];
+			const keys = ['id', 'harvestedAt', 'crop', 'traySize', 'grams'];
+			const key = keys[index];
+			if (key === 'grams') {
+				value = parseInt(value.replace(/,/g, ''), 10);
+			}
 			obj[key] = value;
 			return obj;
 		}, {});

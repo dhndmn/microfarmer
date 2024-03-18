@@ -23,12 +23,14 @@
 			.split('T')[0];
 		inputSupplyQuantity = $modalStore[0].meta.supply.quantity;
 		inputSupplyType = $modalStore[0].meta.supply.type;
+	} else {
+		inputSupplyPurchasedAt = new Date().toISOString().split('T')[0];
 	}
 
 	async function createSupply() {
 		let newSupplyRequest;
 		const newSupply = {
-			cost: parseInt(inputSupplyCost, 10) * 100, // Convert to cents
+			cost: parseFloat(inputSupplyCost) * 100, // Convert to cents
 			farmerId: $farmerId,
 			name: inputSupplyName,
 			purchasedAt: new Date(inputSupplyPurchasedAt).toISOString(),
@@ -54,14 +56,10 @@
 					year: 'numeric'
 				}),
 				quantity: response.quantity.toLocaleString('en-US'),
-				cost: (response.cost / 100).toLocaleString('en-US', {
-					style: 'currency',
-					currency: 'USD'
-				})
+				cost: response.cost
 			};
 
 			$supplies = [formattedResponse, ...$supplies];
-			console.log('Supplies:', $supplies);
 			modalStore.close();
 		} catch (error) {
 			modalStore.showModal({
@@ -82,8 +80,6 @@
 		}); // Delete supply from database
 		const confirmation = await deleteSupply.json();
 		$supplies = $supplies.filter((supply) => supply.id !== inputSupplyId); // Remove deleted supply from store
-		console.log('supply deleted:', confirmation);
-		console.log('Supplies:', $supplies);
 		modalStore.close(); // Close modal
 	}
 
@@ -114,8 +110,6 @@
 		$supplies = $supplies.map((supply) =>
 			supply.id === inputSupplyId ? { ...supply, ...formattedConfirmation } : supply
 		); // Update supply in store
-		console.log('supply updated:', confirmation);
-		console.log('Supplies:', $supplies);
 		modalStore.close(); // Close modal
 	}
 </script>
