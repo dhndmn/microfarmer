@@ -63,7 +63,12 @@
 </script>
 
 {#if $harvests.length}
-	<Table source={datatable} interactive={true} on:selected={handleSelection} />
+	<Table
+		source={datatable}
+		interactive={true}
+		regionFoot="!bg-surface-200-700-token"
+		on:selected={handleSelection}
+	/>
 {:else}
 	<p>No harvests have been entered yet.</p>
 {/if}

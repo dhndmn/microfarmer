@@ -73,7 +73,12 @@
 </script>
 
 {#if $supplies.length}
-	<Table source={datatable} interactive={true} on:selected={handleSelection} />
+	<Table
+		source={datatable}
+		interactive={true}
+		regionFoot="!bg-surface-200-700-token"
+		on:selected={handleSelection}
+	/>
 {:else}
 	<p>No supplies have been entered yet.</p>
 {/if}
