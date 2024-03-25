@@ -12,8 +12,9 @@
 			$harvests = data.map((harvest) => ({
 				...harvest,
 				harvestedAt: new Date(harvest.harvestedAt).toLocaleDateString('en-US', {
+					timeZone: 'UTC',
 					month: 'long',
-					day: '2-digit',
+					day: 'numeric',
 					year: 'numeric'
 				})
 			}));

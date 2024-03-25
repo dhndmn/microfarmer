@@ -51,6 +51,7 @@
 			const formattedResponse = {
 				...response,
 				purchasedAt: new Date(response.purchasedAt).toLocaleDateString('en-US', {
+					timeZone: 'UTC',
 					month: 'long',
 					day: 'numeric',
 					year: 'numeric'
@@ -102,6 +103,7 @@
 		const formattedConfirmation = {
 			...confirmation,
 			purchasedAt: new Date(confirmation.purchasedAt).toLocaleDateString('en-US', {
+				timeZone: 'UTC',
 				month: 'long',
 				day: 'numeric',
 				year: 'numeric'

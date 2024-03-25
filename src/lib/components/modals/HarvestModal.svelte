@@ -48,6 +48,7 @@
 			const formattedResponse = {
 				...response,
 				harvestedAt: new Date(response.harvestedAt).toLocaleDateString('en-US', {
+					timeZone: 'UTC',
 					month: 'long',
 					day: 'numeric',
 					year: 'numeric'
@@ -96,6 +97,7 @@
 		const formattedConfirmation = {
 			...confirmation,
 			harvestedAt: new Date(confirmation.harvestedAt).toLocaleDateString('en-US', {
+				timeZone: 'UTC',
 				month: 'long',
 				day: 'numeric',
 				year: 'numeric'
