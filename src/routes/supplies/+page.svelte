@@ -5,6 +5,8 @@
 	import { onMount } from 'svelte';
 	import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
 
+	let isLoading = true;
+
 	onMount(async () => {
 		const response = await fetch(`/api/supplies?farmerId=${$farmerId}`);
 		if (response.ok) {
@@ -18,6 +20,7 @@
 					year: 'numeric'
 				})
 			}));
+			isLoading = false;
 		} else {
 			// Handle errors here
 		}
@@ -72,7 +75,9 @@
 	}
 </script>
 
-{#if $supplies.length}
+{#if isLoading}
+	<p>Loading supplies...</p>
+{:else if $supplies.length}
 	<Table
 		source={datatable}
 		interactive={true}
@@ -80,5 +85,5 @@
 		on:selected={handleSelection}
 	/>
 {:else}
-	<p>No supplies have been entered yet.</p>
+	<p>No supplies have been recorded yet.</p>
 {/if}
