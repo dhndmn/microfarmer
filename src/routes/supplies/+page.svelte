@@ -12,6 +12,7 @@
 			$supplies = data.map((supply) => ({
 				...supply,
 				purchasedAt: new Date(supply.purchasedAt).toLocaleDateString('en-US', {
+					timeZone: 'UTC',
 					month: 'long',
 					day: 'numeric',
 					year: 'numeric'
