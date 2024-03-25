@@ -2,10 +2,11 @@
 	// @ts-nocheck
 
 	import { farmerId, supplies } from '$lib/stores';
-	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	export let parent;
 
 	const modalStore = getModalStore();
+	const toastStore = getToastStore();
 
 	let inputSupplyCost;
 	let inputSupplyId;
@@ -58,6 +59,12 @@
 
 			$supplies = [formattedResponse, ...$supplies];
 			modalStore.close();
+			const toast = {
+				message: 'Supply created',
+				hideDismiss: true,
+				timeout: 3000
+			};
+			toastStore.trigger(toast);
 		} catch (error) {
 			modalStore.showModal({
 				type: 'error',
@@ -78,6 +85,12 @@
 		const confirmation = await deleteSupply.json();
 		$supplies = $supplies.filter((supply) => supply.id !== inputSupplyId); // Remove deleted supply from store
 		modalStore.close(); // Close modal
+		const toast = {
+			message: 'Supply deleted',
+			hideDismiss: true,
+			timeout: 3000
+		};
+		toastStore.trigger(toast);
 	}
 
 	async function updateSupply() {
@@ -108,6 +121,12 @@
 			supply.id === inputSupplyId ? { ...supply, ...formattedConfirmation } : supply
 		); // Update supply in store
 		modalStore.close(); // Close modal
+		const toast = {
+			message: 'Supply updated',
+			hideDismiss: true,
+			timeout: 3000
+		};
+		toastStore.trigger(toast);
 	}
 </script>
 
