@@ -9,19 +9,17 @@
 
 	let inputSupplyCost;
 	let inputSupplyId;
-	let inputSupplyName;
+	let inputSupplyItem;
 	let inputSupplyPurchasedAt;
-	let inputSupplyQuantity;
 	let inputSupplyType;
 
 	if ($modalStore[0].meta.supply) {
 		inputSupplyCost = $modalStore[0].meta.supply.cost / 100;
 		inputSupplyId = $modalStore[0].meta.supply.id;
-		inputSupplyName = $modalStore[0].meta.supply.name;
+		inputSupplyItem = $modalStore[0].meta.supply.item;
 		inputSupplyPurchasedAt = new Date($modalStore[0].meta.supply.purchasedAt)
 			.toISOString()
 			.split('T')[0];
-		inputSupplyQuantity = $modalStore[0].meta.supply.quantity;
 		inputSupplyType = $modalStore[0].meta.supply.type;
 	} else {
 		inputSupplyPurchasedAt = new Date().toISOString().split('T')[0];
@@ -32,9 +30,8 @@
 		const newSupply = {
 			cost: parseFloat(inputSupplyCost) * 100, // Convert to cents
 			farmerId: $farmerId,
-			name: inputSupplyName,
+			item: inputSupplyItem,
 			purchasedAt: new Date(inputSupplyPurchasedAt).toISOString(),
-			quantity: inputSupplyQuantity,
 			type: inputSupplyType
 		};
 
@@ -56,7 +53,6 @@
 					day: 'numeric',
 					year: 'numeric'
 				}),
-				quantity: response.quantity.toLocaleString('en-US'),
 				cost: response.cost
 			};
 
@@ -90,9 +86,8 @@
 			body: JSON.stringify({
 				id: inputSupplyId,
 				cost: inputSupplyCost * 100,
-				name: inputSupplyName,
+				item: inputSupplyItem,
 				purchasedAt: new Date(inputSupplyPurchasedAt).toISOString(),
-				quantity: inputSupplyQuantity,
 				type: inputSupplyType
 			}),
 			headers: {
@@ -137,21 +132,6 @@
 				type="date"
 				bind:value={inputSupplyPurchasedAt}
 			/>
-			<label class="text-right label" for="supply-name">
-				<span>Item</span>
-			</label>
-			<input
-				name="supply-name"
-				class="px-3 py-1 input"
-				class:input-error={!inputSupplyName}
-				class:input-success={inputSupplyName}
-				minlength="1"
-				maxlength="30"
-				placeholder=""
-				required
-				type="text"
-				bind:value={inputSupplyName}
-			/>
 			<label class="text-right label" for="supply-type">
 				<span>Type</span>
 			</label>
@@ -167,20 +147,20 @@
 				type="text"
 				bind:value={inputSupplyType}
 			/>
-			<label class="text-right label" for="supply-quantity">
-				<span>Quantity</span>
+			<label class="text-right label" for="supply-item">
+				<span>Item</span>
 			</label>
 			<input
-				name="supply-quantity"
+				name="supply-item"
 				class="px-3 py-1 input"
-				class:input-error={!inputSupplyQuantity}
-				class:input-success={inputSupplyQuantity}
+				class:input-error={!inputSupplyItem}
+				class:input-success={inputSupplyItem}
 				minlength="1"
 				maxlength="30"
 				placeholder=""
 				required
-				type="number"
-				bind:value={inputSupplyQuantity}
+				type="text"
+				bind:value={inputSupplyItem}
 			/>
 			<label class="text-right label" for="supply-cost">
 				<span>Cost</span>
@@ -241,9 +221,8 @@
 			<button
 				class="btn {parent.buttonPositive}"
 				on:click={() => ($modalStore[0].meta.action === 'update' ? updateSupply() : createSupply())}
-				disabled={!inputSupplyName ||
+				disabled={!inputSupplyItem ||
 					!inputSupplyType ||
-					!inputSupplyQuantity ||
 					!inputSupplyCost ||
 					!inputSupplyPurchasedAt}
 				>{$modalStore[0].meta.action === 'update' ? 'Update' : 'Create'}</button

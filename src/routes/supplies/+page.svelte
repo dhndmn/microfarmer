@@ -29,29 +29,29 @@
 	);
 
 	$: datatable = {
-		head: ['Date', 'Type', 'Name', 'Quantity', 'Cost'],
+		head: ['Date', 'Type', 'Item', 'Cost'],
 		body: tableMapperValues(
 			$supplies.map((s) => ({
 				...s,
 				cost: (s.cost / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 			})),
-			['purchasedAt', 'type', 'name', 'quantity', 'cost']
+			['purchasedAt', 'type', 'item', 'cost']
 		),
 		meta: tableMapperValues(
 			$supplies.map((s) => ({
 				...s,
 				cost: s.cost / 100
 			})),
-			['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost']
+			['id', 'purchasedAt', 'type', 'item', 'cost']
 		),
-		foot: ['', '', '', '', totalCost]
+		foot: ['', '', '', totalCost]
 	};
 
 	const modalStore = getModalStore();
 
 	function handleSelection(event) {
 		const selectedSupply = event.detail.reduce((obj, value, index) => {
-			const keys = ['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost'];
+			const keys = ['id', 'purchasedAt', 'type', 'item', 'cost'];
 			const key = keys[index];
 			if (key === 'cost') {
 				value = parseInt(value * 100, 10);
