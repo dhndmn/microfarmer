@@ -11,7 +11,6 @@
 	$: $supplyTypes = [
 		...new Set(data.supplyTypes.map((supply) => supply.type.toLowerCase()))
 	].sort();
-	console.log($supplyTypes);
 
 	let inputFarmName = $farmName;
 	let inputFarmerName = $farmerName;
