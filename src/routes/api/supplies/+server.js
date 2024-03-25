@@ -25,16 +25,15 @@ export async function GET() {
 
 // Update
 export async function PUT({ request }) {
-	const { id, cost, name, purchasedAt, quantity, type } = await request.json();
+	const { id, cost, item, purchasedAt, type } = await request.json();
 	const updatedSupply = await prisma.supply.update({
 		where: {
 			id: id
 		},
 		data: {
 			cost: cost,
-			name: name,
+			item: item,
 			purchasedAt: purchasedAt,
-			quantity: quantity,
 			type: type
 		}
 	});
