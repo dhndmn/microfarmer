@@ -1,16 +1,24 @@
 <script>
-	import { Avatar } from '@skeletonlabs/skeleton';
-	import { farmName, farmerId, farmerName } from '$lib/stores';
+	import { Avatar, getToastStore } from '@skeletonlabs/skeleton';
+	import { dayTime, farmerId, farmerName, farmName } from '$lib/stores';
 	import { goto } from '$app/navigation';
 	export let farmer;
 	export let farm;
 	export let id;
+
+	const toastStore = getToastStore();
+	const toast = {
+		message: `Good ${dayTime}, farmer ${$farmerName}!`,
+		hideDismiss: true,
+		timeout: 3000
+	};
 </script>
 
 <div
 	class="flex items-center gap-4 p-4 card hover:cursor-pointer"
 	on:click={() => {
 		goto('/farm');
+		toastStore.trigger(toast);
 		$farmName = farm;
 		$farmerId = id;
 		$farmerName = farmer;

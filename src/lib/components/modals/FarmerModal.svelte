@@ -1,14 +1,16 @@
 <script>
 	// @ts-nocheck
 
-	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { derived } from 'svelte/store';
+	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
-	import { farmName, farmerId, farmerName } from '$lib/stores';
+	import { dayTime, farmName, farmerId, farmerName } from '$lib/stores';
 	export let parent;
 
 	let inputFarmName;
 	let inputFarmerName;
 	const modalStore = getModalStore();
+	const toastStore = getToastStore();
 
 	async function createFarmer() {
 		let newFarmerRequest;
@@ -30,11 +32,17 @@
 				$farmerId = responseData.id; // Set store value
 				$farmerName = inputFarmerName; // Set store value
 				$farmName = inputFarmName; // Set store value
+				modalStore.close();
+				const toast = {
+					message: `Good ${dayTime}, farmer ${$farmerName}!`,
+					hideDismiss: true,
+					timeout: 3000
+				};
+				toastStore.trigger(toast);
+				goto('/farm'); // Forward to farm route
 			} else {
 				throw new Error('Failed to create new farmer');
 			}
-			modalStore.close();
-			goto('/farm'); // Forward to farm route
 		} catch (error) {
 			modalStore.showModal({
 				type: 'error',

@@ -2,10 +2,11 @@
 	// @ts-nocheck
 
 	import { farmerId, harvests } from '$lib/stores';
-	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	export let parent;
 
 	const modalStore = getModalStore();
+	const toastStore = getToastStore();
 
 	let inputHarvestId;
 	let inputHarvestCrop;
@@ -57,6 +58,12 @@
 
 			$harvests = [formattedResponse, ...$harvests];
 			modalStore.close();
+			const toast = {
+				message: 'Harvest created',
+				hideDismiss: true,
+				timeout: 3000
+			};
+			toastStore.trigger(toast);
 		} catch (error) {
 			modalStore.showModal({
 				type: 'error',
@@ -77,6 +84,12 @@
 		const confirmation = await deleteHarvest.json();
 		$harvests = $harvests.filter((harvest) => harvest.id !== inputHarvestId); // Remove deleted harvest from store
 		modalStore.close(); // Close modal
+		const toast = {
+			message: 'Harvest deleted',
+			hideDismiss: true,
+			timeout: 3000
+		};
+		toastStore.trigger(toast);
 	}
 
 	async function updateHarvest() {
@@ -107,6 +120,12 @@
 			harvest.id === inputHarvestId ? { ...harvest, ...formattedConfirmation } : harvest
 		); // Update harvest in store
 		modalStore.close(); // Close modal
+		const toast = {
+			message: 'Harvest updated',
+			hideDismiss: true,
+			timeout: 3000
+		};
+		toastStore.trigger(toast);
 	}
 </script>
 

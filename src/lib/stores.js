@@ -16,6 +16,13 @@ export const supplies = localStorageStore(`${prefix}-supplies`, []);
 export const supplyTypes = localStorageStore(`${prefix}-supplies`, ['seeds', 'soil', 'trays']);
 
 // Miscellaneous stores
+const getDayTime = () => {
+	const hour = new Date().getHours();
+	if (hour < 12) return 'morning';
+	if (hour < 18) return 'afternoon';
+	return 'evening';
+};
+export const dayTime = getDayTime();
 export const unitConversions = [
 	{ unit: 'gram', shorthand: 'g', toPound: 0.00220462, toKilogram: 0.001 },
 	{ unit: 'pound', shorthand: 'lb', toKilogram: 0.453592, toGram: 453.592 },

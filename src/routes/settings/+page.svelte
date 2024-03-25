@@ -4,7 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { InputChip } from '@skeletonlabs/skeleton';
 	import { LightSwitch } from '@skeletonlabs/skeleton';
-	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	import { farmName, farmerId, farmerName, supplyTypes } from '$lib/stores';
 	export let data;
 
@@ -15,6 +15,7 @@
 	let inputFarmName = $farmName;
 	let inputFarmerName = $farmerName;
 	const modalStore = getModalStore();
+	const toastStore = getToastStore();
 	const modal = {
 		type: 'confirm',
 		title: 'Are you sure?',
@@ -41,6 +42,12 @@
 			const updatedData = await response.json();
 			$farmName = updatedData.farmName;
 			$farmerName = updatedData.name;
+			const toast = {
+				message: 'Farmer updated',
+				hideDismiss: true,
+				timeout: 3000
+			};
+			toastStore.trigger(toast);
 		}
 	}
 

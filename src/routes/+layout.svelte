@@ -1,15 +1,23 @@
 <script>
 	// @ts-nocheck
 	import '../app.postcss';
-	import { AppBar, AppShell, TabAnchor, TabGroup } from '@skeletonlabs/skeleton';
+	import {
+		AppBar,
+		AppShell,
+		getModalStore,
+		getToastStore,
+		initializeStores,
+		Modal,
+		storePopup,
+		TabAnchor,
+		TabGroup,
+		Toast
+	} from '@skeletonlabs/skeleton';
 	import { farmName } from '$lib/stores';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
-	import { initializeStores } from '@skeletonlabs/skeleton';
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
-	import { storePopup } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	import HarvestModal from '$lib/components/modals/HarvestModal.svelte';
 	import FarmerModal from '$lib/components/modals/FarmerModal.svelte';
@@ -34,9 +42,12 @@
 			action: 'create'
 		}
 	};
+	const toastStore = getToastStore();
 </script>
 
 <Modal components={modalRegistry} />
+
+<Toast background="variant-filled-success" />
 
 <AppShell>
 	<svelte:fragment slot="pageHeader">
