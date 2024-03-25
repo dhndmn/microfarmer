@@ -50,7 +50,6 @@
 	const modalStore = getModalStore();
 
 	function handleSelection(event) {
-		console.log(event.detail);
 		const selectedSupply = event.detail.reduce((obj, value, index) => {
 			const keys = ['id', 'purchasedAt', 'type', 'name', 'quantity', 'cost'];
 			const key = keys[index];
