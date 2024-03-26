@@ -198,11 +198,15 @@
 				on:click={() =>
 					$modalStore[0].meta.action === 'update' ? updateHarvest() : createHarvest()}
 				disabled={$modalStore[0].meta.action === 'update'
-					? inputHarvestCrop === $modalStore[0].meta.harvest.crop &&
-					  inputHarvestTraySize === $modalStore[0].meta.harvest.traySize &&
-					  inputHarvestGrams === $modalStore[0].meta.harvest.grams &&
-					  inputHarvestHarvestedAt ===
-							new Date($modalStore[0].meta.harvest.harvestedAt).toISOString().split('T')[0]
+					? (inputHarvestCrop === $modalStore[0].meta.harvest.crop &&
+							inputHarvestTraySize === $modalStore[0].meta.harvest.traySize &&
+							inputHarvestGrams === $modalStore[0].meta.harvest.grams &&
+							inputHarvestHarvestedAt ===
+								new Date($modalStore[0].meta.harvest.harvestedAt).toISOString().split('T')[0]) ||
+					  !inputHarvestCrop ||
+					  !inputHarvestTraySize ||
+					  !inputHarvestGrams ||
+					  !inputHarvestHarvestedAt
 					: !inputHarvestCrop ||
 					  !inputHarvestTraySize ||
 					  !inputHarvestGrams ||
