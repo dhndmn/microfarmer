@@ -128,6 +128,8 @@
 		};
 		toastStore.trigger(toast);
 	}
+
+	console.log($modalStore[0].meta.supply);
 </script>
 
 {#if $modalStore[0]}
@@ -143,7 +145,9 @@
 				name="supply-purchased-at"
 				class="px-3 py-1 input"
 				class:input-error={!inputSupplyPurchasedAt}
-				class:input-success={inputSupplyPurchasedAt}
+				class:input-success={$modalStore[0].meta.supply &&
+					inputSupplyPurchasedAt !==
+						new Date($modalStore[0].meta.supply.purchasedAt).toISOString().split('T')[0]}
 				minlength="1"
 				maxlength="30"
 				placeholder="Purchase Date"
@@ -158,7 +162,8 @@
 				name="supply-type"
 				class="px-3 py-1 input"
 				class:input-error={!inputSupplyType}
-				class:input-success={inputSupplyType}
+				class:input-success={$modalStore[0].meta.supply &&
+					inputSupplyType !== $modalStore[0].meta.supply.type}
 				minlength="1"
 				maxlength="30"
 				placeholder="seeds, soil, trays, ..."
@@ -173,7 +178,8 @@
 				name="supply-item"
 				class="px-3 py-1 input"
 				class:input-error={!inputSupplyItem}
-				class:input-success={inputSupplyItem}
+				class:input-success={$modalStore[0].meta.supply &&
+					inputSupplyItem !== $modalStore[0].meta.supply.item}
 				minlength="1"
 				maxlength="30"
 				placeholder=""
@@ -188,7 +194,8 @@
 				<div
 					class="input-group-shim"
 					class:input-error={!inputSupplyCost}
-					class:input-success={inputSupplyCost}
+					class:input-success={$modalStore[0].meta.supply &&
+						(inputSupplyCost * 100).toFixed(0) !== $modalStore[0].meta.supply.cost.toString()}
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -212,7 +219,10 @@
 					class:input-error={!inputSupplyCost ||
 						inputSupplyCost < 0 ||
 						!/^\d+(\.\d{0,2})?$/.test(inputSupplyCost)}
-					class:input-success={inputSupplyCost >= 0 && /^\d+(\.\d{0,2})?$/.test(inputSupplyCost)}
+					class:input-success={$modalStore[0].meta.supply &&
+						inputSupplyCost >= 0 &&
+						/^\d+(\.\d{0,2})?$/.test(inputSupplyCost) &&
+						(inputSupplyCost * 100).toFixed(0) !== $modalStore[0].meta.supply.cost.toString()}
 					minlength="1"
 					maxlength="30"
 					required
@@ -226,7 +236,12 @@
 						inputSupplyCost = !isNaN(cost) && cost > 0 ? cost.toFixed(2) : '0.00';
 					}}
 				/>
-				<select class:input-error={!inputSupplyCost} class:input-success={inputSupplyCost}>
+				<select
+					class:input-error={!inputSupplyCost}
+					class:input-success={$modalStore[0].meta.supply &&
+						(inputSupplyCost * 100).toFixed(0) !== $modalStore[0].meta.supply.cost.toString() &&
+						inputSupplyCost >= 0}
+				>
 					<option>USD</option>
 				</select>
 			</div>
@@ -240,10 +255,17 @@
 			<button
 				class="btn {parent.buttonPositive}"
 				on:click={() => ($modalStore[0].meta.action === 'update' ? updateSupply() : createSupply())}
-				disabled={!inputSupplyItem ||
-					!inputSupplyType ||
-					!inputSupplyCost ||
-					!inputSupplyPurchasedAt}
+				disabled={$modalStore[0].meta.action === 'update'
+					? (inputSupplyPurchasedAt ===
+							new Date($modalStore[0].meta.supply.purchasedAt).toISOString().split('T')[0] &&
+							inputSupplyType === $modalStore[0].meta.supply.type &&
+							inputSupplyItem === $modalStore[0].meta.supply.item &&
+							(inputSupplyCost * 100).toFixed(0) === $modalStore[0].meta.supply.cost.toString()) ||
+					  !inputSupplyItem ||
+					  !inputSupplyType ||
+					  !inputSupplyCost ||
+					  !inputSupplyPurchasedAt
+					: !inputSupplyItem || !inputSupplyType || !inputSupplyCost || !inputSupplyPurchasedAt}
 				>{$modalStore[0].meta.action === 'update' ? 'Update' : 'Create'}</button
 			>
 		</footer>

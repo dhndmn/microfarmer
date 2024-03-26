@@ -127,6 +127,7 @@
 		};
 		toastStore.trigger(toast);
 	}
+	console.log($modalStore[0].meta.harvest);
 </script>
 
 {#if $modalStore[0]}
@@ -142,7 +143,9 @@
 				name="harvest-harvested-at"
 				class="px-3 py-1 input"
 				class:input-error={!inputHarvestHarvestedAt}
-				class:input-success={inputHarvestHarvestedAt}
+				class:input-success={$modalStore[0].meta.harvest &&
+					inputHarvestHarvestedAt !==
+						new Date($modalStore[0].meta.harvest.harvestedAt).toISOString().split('T')[0]}
 				type="date"
 				bind:value={inputHarvestHarvestedAt}
 			/>
@@ -153,7 +156,8 @@
 				name="harvest-crop"
 				class="px-3 py-1 input"
 				class:input-error={!inputHarvestCrop}
-				class:input-success={inputHarvestCrop}
+				class:input-success={$modalStore[0].meta.harvest &&
+					inputHarvestCrop !== $modalStore[0].meta.harvest.crop}
 				type="text"
 				bind:value={inputHarvestCrop}
 			/>
@@ -164,7 +168,8 @@
 				name="harvest-tray-size"
 				class="px-3 py-1 input"
 				class:input-error={!inputHarvestTraySize}
-				class:input-success={inputHarvestTraySize}
+				class:input-success={$modalStore[0].meta.harvest &&
+					inputHarvestTraySize !== $modalStore[0].meta.harvest.traySize}
 				placeholder="1020, 520, mini, ..."
 				type="text"
 				bind:value={inputHarvestTraySize}
@@ -176,7 +181,8 @@
 				name="harvest-grams"
 				class="px-3 py-1 input"
 				class:input-error={!inputHarvestGrams}
-				class:input-success={inputHarvestGrams}
+				class:input-success={$modalStore[0].meta.harvest &&
+					inputHarvestGrams !== $modalStore[0].meta.harvest.grams}
 				type="number"
 				bind:value={inputHarvestGrams}
 			/>
@@ -191,10 +197,20 @@
 				class="btn {parent.buttonPositive}"
 				on:click={() =>
 					$modalStore[0].meta.action === 'update' ? updateHarvest() : createHarvest()}
-				disabled={!inputHarvestCrop ||
-					!inputHarvestTraySize ||
-					!inputHarvestGrams ||
-					!inputHarvestHarvestedAt}
+				disabled={$modalStore[0].meta.action === 'update'
+					? (inputHarvestCrop === $modalStore[0].meta.harvest.crop &&
+							inputHarvestTraySize === $modalStore[0].meta.harvest.traySize &&
+							inputHarvestGrams === $modalStore[0].meta.harvest.grams &&
+							inputHarvestHarvestedAt ===
+								new Date($modalStore[0].meta.harvest.harvestedAt).toISOString().split('T')[0]) ||
+					  !inputHarvestCrop ||
+					  !inputHarvestTraySize ||
+					  !inputHarvestGrams ||
+					  !inputHarvestHarvestedAt
+					: !inputHarvestCrop ||
+					  !inputHarvestTraySize ||
+					  !inputHarvestGrams ||
+					  !inputHarvestHarvestedAt}
 				>{$modalStore[0].meta.action === 'update' ? 'Update' : 'Create'}</button
 			>
 		</footer>
