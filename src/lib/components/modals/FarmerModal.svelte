@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
 
-	import { derived } from 'svelte/store';
+	import Avatar from '../avatar/Avatar.svelte';
 	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
 	import { dayTime, farmName, farmerId, farmerName } from '$lib/stores';
@@ -54,32 +54,35 @@
 </script>
 
 {#if $modalStore[0]}
-	<div class="w-modal-wide">
-		<div class="grid gap-4">
-			<input
-				class="px-3 py-1 input"
-				class:input-error={!inputFarmerName}
-				class:input-success={inputFarmerName}
-				minlength="1"
-				maxlength="30"
-				placeholder="Name"
-				required
-				type="text"
-				bind:value={inputFarmerName}
-			/>
-			<div class="flex items-center gap-4">
+	<div class="p-4 rounded-lg w-modal-wide bg-surface-100-800-token">
+		<div class="grid grid-cols-2 gap-4">
+			<Avatar />
+			<div class="grid gap-4">
 				<input
 					class="px-3 py-1 input"
-					class:input-error={!inputFarmName}
-					class:input-success={inputFarmName}
+					class:input-error={!inputFarmerName}
+					class:input-success={inputFarmerName}
 					minlength="1"
 					maxlength="30"
-					placeholder="Farm Name"
+					placeholder="Name"
 					required
 					type="text"
-					bind:value={inputFarmName}
+					bind:value={inputFarmerName}
 				/>
-				<span>Farm</span>
+				<div class="flex items-center gap-4">
+					<input
+						class="px-3 py-1 input"
+						class:input-error={!inputFarmName}
+						class:input-success={inputFarmName}
+						minlength="1"
+						maxlength="30"
+						placeholder="Farm Name"
+						required
+						type="text"
+						bind:value={inputFarmName}
+					/>
+					<span>Farm</span>
+				</div>
 			</div>
 		</div>
 

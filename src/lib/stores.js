@@ -2,6 +2,13 @@ import { localStorageStore } from '@skeletonlabs/skeleton';
 export const prefix = 'mf';
 
 // Farm stores
+export const avatar = localStorageStore(`${prefix}-farm-name`, {
+	gender: 1,
+	skin: 1,
+	hair: 1,
+	shirt: 1,
+	pants: 1
+});
 export const established = localStorageStore(`${prefix}-established`, '');
 export const farmerId = localStorageStore(`${prefix}-farmer-id`, '');
 export const farmerName = localStorageStore(`${prefix}-farmer-name`, '');
