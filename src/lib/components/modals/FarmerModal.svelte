@@ -54,12 +54,12 @@
 </script>
 
 {#if $modalStore[0]}
-	<div class="p-4 rounded-lg w-modal-wide bg-surface-100-800-token">
-		<div class="grid grid-cols-2 gap-4">
-			<Avatar />
+	<div class="grid gap-4 p-4 rounded-lg w-modal-wide bg-surface-100-800-token">
+		<h2 class="h2">New Farmer</h2>
+		<div class="grid gap-4">
 			<div class="grid gap-4">
 				<input
-					class="px-3 py-1 input"
+					class="h-8 px-3 py-1 input"
 					class:input-error={!inputFarmerName}
 					class:input-success={inputFarmerName}
 					minlength="1"
@@ -71,7 +71,7 @@
 				/>
 				<div class="flex items-center gap-4">
 					<input
-						class="px-3 py-1 input"
+						class="h-8 px-3 py-1 input"
 						class:input-error={!inputFarmName}
 						class:input-success={inputFarmName}
 						minlength="1"
@@ -84,6 +84,7 @@
 					<span>Farm</span>
 				</div>
 			</div>
+			<Avatar />
 		</div>
 
 		<footer class="mt-4 modal-footer {parent.regionFooter}">
